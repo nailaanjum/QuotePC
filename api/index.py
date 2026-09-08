@@ -23,6 +23,7 @@ import pandas as pd
 import statsmodels.api as sm
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 # ---------------------------------------------------------------------------
@@ -216,3 +217,15 @@ def price_breakdown(model: str = Query("simple")):
             for tier, row in breakdown.iterrows()
         ]
     }
+
+
+# ---------------------------------------------------------------------------
+# Static frontend
+# ---------------------------------------------------------------------------
+# On Vercel, vercel.json serves /public separately. For local dev (and any
+# single-process deployment) we also let FastAPI serve the static frontend so
+# the API and UI share one origin and the relative "/api" fetches just work.
+# This mount is registered last so the explicit /api/* routes above win.
+PUBLIC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "public")
+if os.path.isdir(PUBLIC_DIR):
+    app.mount("/", StaticFiles(directory=PUBLIC_DIR, html=True), name="static")
