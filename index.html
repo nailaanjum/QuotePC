@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>💻 Computer Price Predictor</title>
+<link rel="stylesheet" href="styles.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1>💻 Computer Price Predictor</h1>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="predict">🔮 Predict</button>
+      <button class="tab-btn" data-tab="how">📊 How It Works</button>
+    </nav>
+
+    <!-- ---------------- PREDICT TAB ---------------- -->
+    <section id="predict" class="tab-panel active">
+      <p class="subtitle">Estimate a computer's price based on its specs.</p>
+
+      <div class="card">
+        <div class="slider-row">
+          <label for="ram">🧠 RAM (MB): <span id="ramVal">8</span></label>
+          <input type="range" id="ram" min="2" max="64" step="1" value="8" />
+        </div>
+
+        <div class="slider-row">
+          <label for="speed">⚡ Speed (MHz): <span id="speedVal">50</span></label>
+          <input type="range" id="speed" min="25" max="100" step="1" value="50" />
+        </div>
+
+        <div class="slider-row">
+          <label for="hd">💾 Hard Drive (MB): <span id="hdVal">500</span></label>
+          <input type="range" id="hd" min="80" max="2100" step="10" value="500" />
+        </div>
+
+        <div class="slider-row">
+          <label for="screen">🖥️ Screen (inches): <span id="screenVal">15</span></label>
+          <input type="range" id="screen" min="14" max="17" step="1" value="15" />
+        </div>
+      </div>
+
+      <div class="card result-card">
+        <div class="metric">
+          <div class="metric-label">💰 Predicted Price</div>
+          <div class="metric-value" id="predictedPrice">–</div>
+        </div>
+        <p class="caption" id="predictedCaption">
+          We're fairly confident the real price would fall somewhere between … and ….
+        </p>
+      </div>
+    </section>
+
+    <!-- ---------------- HOW IT WORKS TAB ---------------- -->
+    <section id="how" class="tab-panel">
+      <p class="subtitle">
+        Curious how the prediction above was made? This tab shows what's under the hood —
+        no stats background needed.
+      </p>
+
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="modelChoice" value="simple" checked />
+          Simple model (4 features)
+        </label>
+        <label>
+          <input type="radio" name="modelChoice" value="full" />
+          Full model (6 features)
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>🎯 What drives the price?</h2>
+        <p class="caption">
+          Each number below shows how much the predicted price changes when that feature
+          goes up by one unit, holding everything else constant.
+        </p>
+        <table id="paramsTable" class="data-table"></table>
+      </div>
+
+      <div id="flagsBox"></div>
+
+      <div class="card">
+        <h2>📈 How wrong is the model, and where?</h2>
+        <p class="caption">
+          This plot compares the price the model predicted (x-axis) to how far off it was
+          (y-axis). Points scattered evenly around the middle line mean the model is
+          unbiased. A pattern — like a curve, or points fanning out — means the model
+          struggles in that price range.
+        </p>
+        <canvas id="residualChart" height="220"></canvas>
+      </div>
+
+      <div class="card">
+        <h2>💵 Overall accuracy</h2>
+        <div class="metrics-row">
+          <div class="metric">
+            <div class="metric-label">Average error (MAE)</div>
+            <div class="metric-value" id="maeVal">–</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Typical error size (RMSE)</div>
+            <div class="metric-value" id="rmseVal">–</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🏷️ Does it predict better for cheap vs. expensive computers?</h2>
+        <p class="caption">
+          We split computers into Low, Mid, and High price groups and checked the average
+          error in each. If one group has a much bigger average error, the model is less
+          reliable for that price range.
+        </p>
+        <table id="breakdownTable" class="data-table"></table>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <span id="statusMsg"></span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
