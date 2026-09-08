@@ -1,0 +1,11 @@
+{
+  "name": "computer-price-predictor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Computer Price Predictor — FastAPI backend (api/) + static HTML/CSS/JS frontend (public/), deployed on Vercel.",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo \"No build step — static frontend + Python serverless function\"",
+    "start": "vercel dev"
+  }
+}
