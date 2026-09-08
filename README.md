@@ -9,7 +9,7 @@
   price-tier error breakdown — a 1:1 port of what the Streamlit tabs showed.
 
 ```
-computer-price-app/
+PC-quote-app/
 ├── api/
 │   ├── index.py        # FastAPI app + all analysis logic
 │   └── Computers.csv    # dataset (must stay next to index.py)
