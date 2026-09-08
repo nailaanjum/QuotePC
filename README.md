@@ -1,7 +1,6 @@
-# Computer Price Predictor — FastAPI + HTML/CSS/JS
+# PC Quote Predictor — FastAPI + HTML/CSS/JS
 
-This is a rewrite of the original Streamlit app into:
-- **Backend**: FastAPI (`api/index.py`) — fits the same two OLS regression
+- **Backend**: FastAPI (`api/index.py`) — fits the two OLS regression
   models (`simple`: ram/speed/hd/screen, `full`: + ads/trend) and exposes
   them as JSON endpoints.
 - **Frontend**: plain HTML/CSS/JS (`public/`) — a spec-sheet-styled UI with
@@ -57,33 +56,19 @@ both are served from the same origin.
 
 ## Deploy to Vercel
 
-1. Push this folder to a GitHub repo (or run `vercel` from inside it with the
+1. Pushed this folder to a GitHub repo (or run `vercel` from inside it with the
    Vercel CLI installed).
 2. `vercel.json` already routes:
    - `/api/*` → the Python serverless function (`api/index.py`, using the
      `@vercel/python` runtime, which reads `requirements.txt`)
    - everything else → static files in `public/`
-3. Deploy:
+3. Deployed:
    ```bash
    npm i -g vercel   # if you don't have it
    vercel             # first deploy / link project
    vercel --prod      # promote to production
    ```
-4. Vercel will build the Python function automatically. No environment
+4. Vercel built the Python function automatically. No environment
    variables are required — the dataset ships alongside `index.py`.
 
-**Note on Vercel serverless + `lru_cache`**: each serverless invocation may
-spin up a fresh process, so the model gets refit on cold starts (it's a fast
-OLS fit on ~6k rows, so this is not a performance concern). Within a warm
-instance, `lru_cache` avoids refitting on every request.
 
-## Alternative: keep it on Streamlit
-
-If you'd rather deploy the original single-file Streamlit app instead of the
-FastAPI/JS split (e.g., because Streamlit Community Cloud is free and simpler
-for a personal/demo project), you can still do that — just keep the original
-`app.py` + `Computers.csv` in a repo and deploy via
-[share.streamlit.io](https://share.streamlit.io). The FastAPI+JS version in
-this folder is the one to use if you want a fully custom-styled frontend or
-plan to deploy on Vercel specifically, since Vercel doesn't run long-lived
-Streamlit servers natively.
